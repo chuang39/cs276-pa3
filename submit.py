@@ -1,4 +1,4 @@
-
+### The submission script for PA3 of CS276, 2015
 
 ### The only things you'll have to edit (unless you're porting this script over to a different language) 
 ### are at the bottom of this file.
@@ -124,10 +124,6 @@ def submit_url():
 
 def submitSolution(email_address, ch_resp, sid, output, source, state, ch_aux):
   """Submits a solution to the server. Returns (result, string)."""
-  #source_64_msg = email.message.Message()
-  #source_64_msg.set_payload(source)
-  #email.encoders.encode_base64(source_64_msg)
-
   output_64_msg = email.message.Message()
   output_64_msg.set_payload(output)
   email.encoders.encode_base64(output_64_msg)
@@ -165,7 +161,7 @@ def source(partIdx):
 # Make sure you change this string to the last segment of your class URL.
 # For example, if your URL is https://class.coursera.org/pgm-2012-001-staging, set it to "pgm-2012-001-staging".
 URL = 'cs276-003'
-linesOutput = 1065
+linesOutput = 2964
 
 # the "Identifier" you used when creating the part
 partIds = ['pa3_report','pa3_task1','pa3_task2','pa3_task3', 'pa3_task4']          
@@ -184,7 +180,6 @@ def ensure_dir(d):
         os.makedirs(d)
         
 def output(partIdx,ch_aux):
-  print '== If you use queryDocTrainData or queryDocTrainRel, make sure it\'s in the current working directory'
   print '== Running your code ...'
   print '== Your code should output results (and nothing else) to stdout'
   # tempoutfile = tempfile.mkdtemp()
@@ -218,51 +213,63 @@ def output(partIdx,ch_aux):
     print 'Submitting the report'
 
   elif partIdx == 1:
-    print 'Calling ./rank.sh for Task 1 (this might take a while)'
+    print '== Calling ./rank.sh for Task 1 (this might take a while)'
     start = time()
     child = Popen(['./rank.sh', tempoutfile,'cosine'], stdout=PIPE, stderr=PIPE, shell=False);
     (res, err) = child.communicate("")  
     elapsed = time() - start
     guesses = res.splitlines()
+    print '== Your stdout output is:'
+    print res
+    print '== Your stderr output is:'
     print err
     if (len(guesses) != linesOutput):
-        print 'Warning. The number of url-document pairs ' + str(len(guesses)) + ' is not correct. Please ensure that the output is formatted properly.'
+        print '== Warning. The number of url-document pairs ' + str(len(guesses)) + ' is not correct. Please ensure that the output is formatted properly.'
     stats['result'] = res
 
   elif partIdx == 2:
-      print 'Calling ./rank.sh for Task 2 (this might take a while)'
+      print '== Calling ./rank.sh for Task 2 (this might take a while)'
       start = time()
       child = Popen(['./rank.sh', tempoutfile,'bm25'], stdout=PIPE, stderr=PIPE, shell=False)
       (res, err) = child.communicate("")
       elapsed = time() - start
       guesses = res.splitlines()
+      print '== Your stdout output is:'
+      print res
+      print '== Your stderr output is:'
       print err
       if (len(guesses) != linesOutput):
-          print 'Warning. The number of url-document pairs is not correct. Please ensure that the output is formatted properly.'
+          print '== Warning. The number of url-document pairs is not correct. Please ensure that the output is formatted properly.'
       stats['result'] = res
 
   elif partIdx == 3:
-      print 'Calling ./rank.sh for Task 3 (this might take a while)'
+      print '== Calling ./rank.sh for Task 3 (this might take a while)'
       start = time()
       child = Popen(['./rank.sh',tempoutfile,'window'], stdout=PIPE, stderr=PIPE, shell=False)
       (res, err) = child.communicate("")
       elapsed = time() - start
       guesses = res.splitlines()
+      print '== Your stdout output is:'
+      print res
+      print '== Your stderr output is:'
       print err
       if (len(guesses) != linesOutput):
-          print 'Warning. The number of url-document pairs is not correct. Please ensure that the output is formatted properly.'
+          print '== Warning. The number of url-document pairs is not correct. Please ensure that the output is formatted properly.'
       stats['result'] = res
 
   elif partIdx == 4:
-      print 'Calling ./rank.sh for Task 4 (this might take a while)'
+      print '== Calling ./rank.sh for Task 4 (this might take a while)'
       start = time()
       child = Popen(['./rank.sh', tempoutfile,'extra'], stdout=PIPE, stderr=PIPE, shell=False)
       (res, err) = child.communicate("")
       elapsed = time() - start
       guesses = res.splitlines()
+      print '== Your stdout output is:'
+      print res
+      print '== Your stderr output is:'
       print err
       if (len(guesses) != linesOutput):
-          print 'Warning. The number of url-document pairs is not correct. Please ensure that the output is formatted properly.'
+          print '== Warning. The number of url-document pairs is not correct. Please ensure that the output is formatted properly.'
       stats['result'] = res
       
   else:
