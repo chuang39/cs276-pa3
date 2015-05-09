@@ -52,6 +52,10 @@ public class Rank {
 					 * @//Done : Compare the url scores
 					 */
 					return o1.getSecond() < o2.getSecond() ? -1 : o1.getSecond() == o2.getSecond() ? 0 : 1;
+					
+					// Could we just do the following? I think either works
+					
+					//return o1.getSecond().compareTo(o2.getSecond());
 				}	
 			});
 			
