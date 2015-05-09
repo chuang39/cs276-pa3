@@ -62,8 +62,6 @@ public class CosineSimilarityScorer extends AScorer {
 
 			// Each query term should be weighted using the idf values with laplace add-one smoothing
 			Double idf_value = idfs.containsKey(term) ? idfs.get(term) : idfs.get("#inexistent#term#");
-			System.out.println("==="+tf_value);
-			System.out.format("===%s: %f   \n",term,idf_value);
 			qv.put(term, tf_value * idf_value);
 		}
 		if (DEBUG_getNetScore) {
