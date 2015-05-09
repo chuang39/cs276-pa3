@@ -22,9 +22,17 @@ public class CosineSimilarityScorer extends AScorer {
 
 	public CosineSimilarityScorer(Map<String,Double> idfs) {
 		super(idfs);
+
+		fieldToWeightDict.put("url", urlweight);
+		fieldToWeightDict.put("title", titleweight);
+		fieldToWeightDict.put("body", bodyweight);
+		fieldToWeightDict.put("header", headerweight);
+		fieldToWeightDict.put("anchor", anchorweight);
 	}
 
 	/////////////// Weights //////////////////
+	static Map<String, Double> fieldToWeightDict = new HashMap<String, Double>();
+
 	double urlweight = -1;
 	double titleweight = -1;
 	double bodyweight = -1;
@@ -36,14 +44,41 @@ public class CosineSimilarityScorer extends AScorer {
 
 	public double getNetScore(Map<String, Map<String, Double>> tfs, Query q, Map<String,Double> tfQuery, Document d) {
 		double score = 0.0;
-		
+
 		/*
-		 * @//TODO : Your code here
+		 * @//Done : Compute dot product
 		 */
+
+		// Calculate query vector w/ tf-idf (qv)
+		Map<String, Double> qv = new HashMap<String, Double>();
+		boolean isSublinear = true;
+		for (String term : tfQuery.keySet()) {
+			Double tf_value = tfQuery.get(term);
+			if (isSublinear)
+				tf_value = 1 + Math.log(tf_value);
+
+			// Each query term should be weighted using the idf values with laplace add-one smoothing
+			qv.put(term, tf_value * idfs.get(term));
+		}
 		
-		// Compute dot product
+		// Calculate term score vector
+		Map<String, Double> tsv = new HashMap<String, Double>();
+		for (String tfType : tfs.keySet()) {
+			Map<String, Double> termToFreq = tfs.get(tfType);
+
+			for (String term : termToFreq.keySet()) {
+				Double weight = fieldToWeightDict.get(tfType);
+				if (!tsv.containsKey(term)) {
+					tsv.put(term, weight * termToFreq.get(term));
+				} else {
+					tsv.put(term, tsv.get(term) + weight * termToFreq.get(term));
+				}
+			}
+		}
 		
-		// Each query term should be weighted using the idf values with laplace add-one smoothing
+		for (String term : qv.keySet()) {
+			score += qv.get(term) * tsv.get(term);
+		}
 		
 		return score;
 	}
