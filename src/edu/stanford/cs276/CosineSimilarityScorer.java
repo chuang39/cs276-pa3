@@ -31,7 +31,7 @@ public class CosineSimilarityScorer extends AScorer {
 	double headerweight = -1;
 	double anchorweight = -1;
 
-	double smoothingBodyLength = -1; // Smoothing factor when the body length is 0.
+	double smoothingBodyLength = 500; // Smoothing factor when the body length is 0.
 	//////////////////////////////////////////
 
 	public double getNetScore(Map<String, Map<String, Double>> tfs, Query q, Map<String,Double> tfQuery, Document d) {
@@ -41,15 +41,26 @@ public class CosineSimilarityScorer extends AScorer {
 		 * @//TODO : Your code here
 		 */
 		
+		// Compute dot product
+		
+		// Each query term should be weighted using the idf values with laplace add-one smoothing
+		
 		return score;
 	}
 
 	// Normalize the term frequencies. Note that we should give uniform normalization to all fields as discussed
 	// in the assignment handout.
-	public void normalizeTFs(Map<String,Map<String, Double>> tfs,Document d, Query q) {
-		/*
-		 * @//TODO : Your code here
-		 */
+	public void normalizeTFs(Map<String,Map<String, Double>> tfs, Document d, Query q) {
+		
+		// Normalize document tf vectors by length with smoothing
+		for (String tfType : tfs.keySet()) {
+			
+			Map<String, Double> termToFreq = tfs.get(tfType);
+			
+			for (String term : termToFreq.keySet()) {
+				termToFreq.put(term, termToFreq.get(term) / (double)(d.body_length + smoothingBodyLength));
+			}
+		}
 	}
 
 

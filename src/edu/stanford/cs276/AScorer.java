@@ -26,9 +26,17 @@ public abstract class AScorer {
 	public Map<String,Double> getQueryFreqs(Query q) {
 		Map<String,Double> tfQuery = new HashMap<String, Double>(); // queryWord -> term frequency
 		
-		/*
-		 * @//TODO : Your code here
-		 */
+		List<String> queryWords = q.queryWords;
+		
+		for (String queryWord : queryWords) {
+			if (tfQuery.containsKey(queryWord)) {
+				// Increment the term doc count
+				tfQuery.put(queryWord, tfQuery.get(queryWord) + 1);
+			}
+			else {
+				tfQuery.put(queryWord, 1.0);
+			}
+		}
 		
 		return tfQuery;
 	}
