@@ -45,24 +45,22 @@ public class Rank {
 			}
 
 			// Sort urls for query based on scores
-			Collections.sort(urlAndScores, new Comparator<Pair<String,Double>>() {
+			Collections.sort(urlAndScores, Collections.reverseOrder(new Comparator<Pair<String,Double>>(){
 				@Override
 				public int compare(Pair<String, Double> o1, Pair<String, Double> o2) {
 					/*
 					 * @//Done : Compare the url scores
 					 */
-					return o1.getSecond() < o2.getSecond() ? -1 : o1.getSecond() == o2.getSecond() ? 0 : 1;
-					
-					// Could we just do the following? I think either works
-					
-					//return o1.getSecond().compareTo(o2.getSecond());
+					return o1.getSecond().compareTo(o2.getSecond());
 				}	
-			});
+			}));
 			
 			// Put completed rankings into map
 			List<String> curRankings = new ArrayList<String>();
-			for (Pair<String,Double> urlAndScore : urlAndScores)
+			for (Pair<String,Double> urlAndScore : urlAndScores) {
+				// System.out.format("Final ranking: %s,  %f\n", urlAndScore.getFirst(), urlAndScore.getSecond());
 				curRankings.add(urlAndScore.getFirst());
+			}
 			queryRankings.put(query, curRankings);
 		}
 		return queryRankings;
@@ -174,9 +172,9 @@ public class Rank {
 		
 		// Print results and save them to file (This is not necessary)
 		/*
-		  String outputFilePath =  null;
+		  String outputFilePath = null;
 		  writeRankedResultsToFile(queryRankings,outputFilePath);
-		 */
+		*/
 		
 		// Print results
 		printRankedResults(queryRankings);

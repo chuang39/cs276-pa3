@@ -51,7 +51,7 @@ public class CosineSimilarityScorer extends AScorer {
 		 * @//Done : Compute dot product
 		 */
 
-		if (DEBUG_getNetScore) System.out.println("*** Query:"+q);
+		if (DEBUG_getNetScore) System.out.format("*** url: %s, Query: %s\n", d.url, q.queryWords.toString());
 		// Calculate query vector w/ tf-idf (qv)
 		Map<String, Double> qv = new HashMap<String, Double>();
 		boolean isSublinear = true;
@@ -101,6 +101,7 @@ public class CosineSimilarityScorer extends AScorer {
 			score += qv.get(term) * tsv.get(term);
 		}
 		
+		if (DEBUG_getNetScore) System.out.println("score: "+score);
 		return score;
 	}
 
