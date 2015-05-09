@@ -165,9 +165,12 @@ public class LoadHandler {
 
 		// Make idf using df
 		for (String term : termDocCount.keySet()) {
-			// Compute idf for each term
-			termIdf.put(term, Math.log(totalDocCount / termDocCount.get(term)));
+			// Compute idf for each term with Laplace add-one smoothing
+			termIdf.put(term, Math.log((totalDocCount+1) / (termDocCount.get(term)+1)));
 		}
+		// Add a special keyword for inexistent word's idf value
+		// Math.log((totalDocCount+1) / 1)
+		termIdf.put("#inexistent#term#", Math.log(totalDocCount+1));
 
 		// Save to file
 		try {

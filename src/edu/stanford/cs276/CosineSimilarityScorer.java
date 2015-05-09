@@ -33,13 +33,15 @@ public class CosineSimilarityScorer extends AScorer {
 	/////////////// Weights //////////////////
 	static Map<String, Double> fieldToWeightDict = new HashMap<String, Double>();
 
-	double urlweight = -1;
-	double titleweight = -1;
-	double bodyweight = -1;
-	double headerweight = -1;
-	double anchorweight = -1;
+	double urlweight = 1;
+	double titleweight = 1;
+	double bodyweight = 1;
+	double headerweight = 1;
+	double anchorweight = 1;
 
 	double smoothingBodyLength = 500; // Smoothing factor when the body length is 0.
+
+	static boolean DEBUG_getNetScore = false;
 	//////////////////////////////////////////
 
 	public double getNetScore(Map<String, Map<String, Double>> tfs, Query q, Map<String,Double> tfQuery, Document d) {
@@ -49,6 +51,7 @@ public class CosineSimilarityScorer extends AScorer {
 		 * @//Done : Compute dot product
 		 */
 
+		if (DEBUG_getNetScore) System.out.println("*** Query:"+q);
 		// Calculate query vector w/ tf-idf (qv)
 		Map<String, Double> qv = new HashMap<String, Double>();
 		boolean isSublinear = true;
@@ -58,7 +61,17 @@ public class CosineSimilarityScorer extends AScorer {
 				tf_value = 1 + Math.log(tf_value);
 
 			// Each query term should be weighted using the idf values with laplace add-one smoothing
-			qv.put(term, tf_value * idfs.get(term));
+			Double idf_value = idfs.containsKey(term) ? idfs.get(term) : idfs.get("#inexistent#term#");
+			System.out.println("==="+tf_value);
+			System.out.format("===%s: %f   \n",term,idf_value);
+			qv.put(term, tf_value * idf_value);
+		}
+		if (DEBUG_getNetScore) {
+			System.out.format("qv size=%d:", qv.size());
+			for (Map.Entry<String, Double> entry : qv.entrySet()) {
+				System.out.format("%s[%f], ", entry.getKey(), entry.getValue());
+			}
+			System.out.println();
 		}
 		
 		// Calculate term score vector
@@ -75,8 +88,18 @@ public class CosineSimilarityScorer extends AScorer {
 				}
 			}
 		}
+		if (DEBUG_getNetScore) {
+			System.out.format("tsv size=%d:", tsv.size());
+			for (Map.Entry<String, Double> entry : tsv.entrySet()) {
+				System.out.format("%s[%f], ", entry.getKey(), entry.getValue());
+			}
+			System.out.println();
+		}
 		
-		for (String term : qv.keySet()) {
+		// Get the dot product result here. Since for tsv some term's score vector may
+		// not exist and qv must have every term, we iterate tsv to accumulate the score.
+		// qv should has every term in tsv.
+		for (String term : tsv.keySet()) {
 			score += qv.get(term) * tsv.get(term);
 		}
 		
