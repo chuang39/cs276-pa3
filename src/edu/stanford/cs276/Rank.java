@@ -49,9 +49,9 @@ public class Rank {
 				@Override
 				public int compare(Pair<String, Double> o1, Pair<String, Double> o2) {
 					/*
-					 * @//TODO : Your code here
+					 * @//Done : Compare the url scores
 					 */
-					return -1;
+					return o1.getSecond() < o2.getSecond() ? -1 : o1.getSecond() == o2.getSecond() ? 0 : 1;
 				}	
 			});
 			
