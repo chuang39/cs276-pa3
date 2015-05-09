@@ -128,7 +128,7 @@ public class Rank {
 		Map<String,Double> idfs;
 		
 		// Uncomment this line to rebuild the term => idf mapping
-		// Map<String,Double> idfs = LoadHandler.buildDFs("data", "idfs");
+		//idfs = LoadHandler.buildDFs("data", "idfs");
 		
 		// Usually the term => idf mapping can be just loaded from disk
 		idfs = LoadHandler.loadDFs("idfs");
