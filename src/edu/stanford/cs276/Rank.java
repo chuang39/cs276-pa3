@@ -122,11 +122,28 @@ public class Rank {
 	public static void main(String[] args) throws IOException {
 
 		// To store the idfs for different words in the collection
-		Map<String,Double> idfs = null;
+		
+		Map<String,Double> idfs;
+		
+		// Uncomment this line to rebuild the term => idf mapping
+		// Map<String,Double> idfs = LoadHandler.buildDFs("data", "idfs");
+		
+		// Usually the term => idf mapping can be just loaded from disk
+		idfs = LoadHandler.loadDFs("idfs");
 		
 		/*
 		 * @//TODO : Your code here to handle idfs
+		 * 
+		 * Go back to dataset from programming assignment 1
+		 * 
+		 * Use LoadHandler
+		 * 
 		 */
+		
+		// Debug idf values
+//		System.out.println(idfs.get("the"));
+//		System.out.println(idfs.get("stanford"));
+//		System.out.println(idfs.get("intelligence"));
 
 		if (args.length < 2) {
 			System.err.println("Insufficient number of arguments: <queryDocTrainData path> taskType");
