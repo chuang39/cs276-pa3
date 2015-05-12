@@ -33,11 +33,11 @@ public class CosineSimilarityScorer extends AScorer {
 	/////////////// Weights //////////////////
 	static Map<String, Double> fieldToWeightDict = new HashMap<String, Double>();
 
-	double urlweight = 1;
-	double titleweight = 1;
+	double urlweight = 7;
+	double titleweight = 7;
 	double bodyweight = 1;
 	double headerweight = 1;
-	double anchorweight = 1;
+	double anchorweight = 2;
 
 	double smoothingBodyLength = 500; // Smoothing factor when the body length is 0.
 
