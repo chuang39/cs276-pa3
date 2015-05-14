@@ -21,20 +21,21 @@ public class BM25Scorer extends AScorer {
 
 
 	/////////////// Weights /////////////////
-	double urlweight = 1;
-	double titleweight  = 1;
+	
+	double urlweight = 7;
+	double titleweight = 7;
 	double bodyweight = 1;
 	double headerweight = 1;
-	double anchorweight = 1;
+	double anchorweight = 2;
 
 	/////// BM25 specific weights ///////////
-	double burl=1;
+	double burl=0.1;
 	double btitle=1;
 	double bheader=1;
 	double bbody=1;
-	double banchor=1;
+	double banchor=0.5;
 
-	double k1=1;
+	double k1=200;
 	double pageRankLambda=1;
 	double pageRankLambdaPrime=1;
 	//////////////////////////////////////////
