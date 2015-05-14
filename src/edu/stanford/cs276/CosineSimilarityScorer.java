@@ -33,11 +33,11 @@ public class CosineSimilarityScorer extends AScorer {
 	/////////////// Weights //////////////////
 	static Map<String, Double> fieldToWeightDict = new HashMap<String, Double>();
 
-	double urlweight = 7;
-	double titleweight = 7;
+	double urlweight = 9;
+	double titleweight = 10;
 	double bodyweight = 1;
-	double headerweight = 1;
-	double anchorweight = 2;
+	double headerweight = 2;
+	double anchorweight = 1.5;
 
 	double smoothingBodyLength = 500; // Smoothing factor when the body length is 0.
 
@@ -79,6 +79,7 @@ public class CosineSimilarityScorer extends AScorer {
 
 			for (String term : termToFreq.keySet()) {
 				Double weight = fieldToWeightDict.get(tfType);
+
 				if (!tsv.containsKey(term)) {
 					tsv.put(term, weight * termToFreq.get(term));
 				} else {

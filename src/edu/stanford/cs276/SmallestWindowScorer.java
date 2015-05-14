@@ -18,8 +18,16 @@ import edu.stanford.cs276.util.Pair;
 public class SmallestWindowScorer extends CosineSimilarityScorer {
 
 	/////// Smallest window specific hyper-parameters ////////
-	double B = 3;
-	double boostmod = 1.5;
+	double B = 1.5;
+	double boostmod = 2;
+
+	static Map<String, Double> fieldToWeightDictWindow = new HashMap<String, Double>();
+
+	double urlweight = 8;
+	double titleweight = 8;
+	double bodyweight = 1;
+	double headerweight = 2;
+	double anchorweight = 2;
 
 	//////////////////////////////
 	
@@ -33,6 +41,11 @@ public class SmallestWindowScorer extends CosineSimilarityScorer {
 		/*
 		 * @//TODO : Your code here
 		 */
+		fieldToWeightDictWindow.put("url", urlweight);
+		fieldToWeightDictWindow.put("title", titleweight);
+		fieldToWeightDictWindow.put("body", bodyweight);
+		fieldToWeightDictWindow.put("header", headerweight);
+		fieldToWeightDictWindow.put("anchor", anchorweight);
 	}
 
 	static Integer getPostingValueByPair(Map<String, List<Integer>> d, Pair<Integer, String> p) {
@@ -70,7 +83,7 @@ public class SmallestWindowScorer extends CosineSimilarityScorer {
 
 		while (pq.size() == doclen) {
 			Pair<Integer, String> curMinPair = pq.poll();
-			winSize = Math.min(winSize, curMax - getPostingValueByPair(d, curMinPair));
+			winSize = Math.min(winSize, curMax - getPostingValueByPair(d, curMinPair)+1);
 			String curString = curMinPair.getSecond();
 			Integer curIndex= curMinPair.getFirst();
 			if (d.get(curString).size()-1 > curIndex) {
@@ -137,6 +150,7 @@ public class SmallestWindowScorer extends CosineSimilarityScorer {
 		return winSize;
 	}
 
+
 	public double getNetScore(Map<String, Map<String, Double>> tfs, Query q, Map<String,Double> tfQuery, Document d) {
 		double score = 0.0;
 
@@ -182,9 +196,10 @@ public class SmallestWindowScorer extends CosineSimilarityScorer {
 			}
 
 			for (String term : termToFreq.keySet()) {
-				//Double weight = fieldToWeightDict.get(tfType);
-
-				Double weight = (1 + B * (q.queryWords.size()/Math.pow(dist, boostmod)));
+				Double weight = fieldToWeightDictWindow.get(tfType);
+				if (dist < 10*q.queryWords.size()) {
+					weight *= (1.0 + B * Math.pow((double)q.queryWords.size()/dist, boostmod));
+				}
 				if (!tsv.containsKey(term)) {
 					tsv.put(term, weight * termToFreq.get(term));
 				} else {
@@ -210,8 +225,7 @@ public class SmallestWindowScorer extends CosineSimilarityScorer {
 		if (DEBUG_getNetScore) System.out.println("score: "+score);
 		return score;
 	}
-	
-	
+
 	@Override
 	public double getSimScore(Document d, Query q) {
 		Map<String,Map<String, Double>> tfs = this.getDocTermFreqs(d,q);
