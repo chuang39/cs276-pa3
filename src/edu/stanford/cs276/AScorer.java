@@ -144,10 +144,9 @@ public abstract class AScorer {
 				for (String anchorToken : anchorTokens) {
 					if (anchorTfs.containsKey(anchorToken)) {
 						// Increment the term doc count
-						anchorTfs
-								.put(anchorToken, anchorTfs.get(anchorToken) + anchorCount);
+						anchorTfs.put(anchorToken, anchorTfs.get(anchorToken) + anchorCount);
 					} else {
-						headerTfs.put(anchorToken, (double) anchorCount);
+						anchorTfs.put(anchorToken, (double) anchorCount);
 					}
 				}
 
