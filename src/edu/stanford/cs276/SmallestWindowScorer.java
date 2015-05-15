@@ -26,8 +26,8 @@ public class SmallestWindowScorer extends CosineSimilarityScorer {
 	double urlweight = 8;
 	double titleweight = 8;
 	double bodyweight = 1;
-	double headerweight = 2;
-	double anchorweight = 2;
+	double headerweight = 2.5;
+	double anchorweight = 1.5;
 
 	//////////////////////////////
 	

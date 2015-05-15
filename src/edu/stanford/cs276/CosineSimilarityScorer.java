@@ -36,8 +36,8 @@ public class CosineSimilarityScorer extends AScorer {
 	double urlweight = 9;
 	double titleweight = 10;
 	double bodyweight = 1;
-	double headerweight = 2;
-	double anchorweight = 1.5;
+	double headerweight = 3;
+	double anchorweight = 2.5;
 
 	double smoothingBodyLength = 500; // Smoothing factor when the body length is 0.
 
