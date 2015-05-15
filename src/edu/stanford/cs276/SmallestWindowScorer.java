@@ -54,10 +54,6 @@ public class SmallestWindowScorer extends CosineSimilarityScorer {
 	}
 	
 	static public double checkWindowBody(Query q, Map<String, List<Integer>> d) {
-		// if query and doc have different length for keys, doc must missed some
-		// query terms. Return max length. Maybe we should use a set to remove duplicate
-		// terms in query.
-
 		int querylen = q.queryWords.size();
 		int doclen = d.size();
 		if (querylen != doclen) {
