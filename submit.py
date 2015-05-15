@@ -161,7 +161,7 @@ def source(partIdx):
 # Make sure you change this string to the last segment of your class URL.
 # For example, if your URL is https://class.coursera.org/pgm-2012-001-staging, set it to "pgm-2012-001-staging".
 URL = 'cs276-003'
-linesOutput = 2964
+linesOutput = 1482
 
 # the "Identifier" you used when creating the part
 partIds = ['pa3_report','pa3_task1','pa3_task2','pa3_task3', 'pa3_task4']          
@@ -215,8 +215,8 @@ def output(partIdx,ch_aux):
   elif partIdx == 1:
     print '== Calling ./rank.sh for Task 1 (this might take a while)'
     start = time()
-    child = Popen(['./rank.sh', tempoutfile,'cosine'], stdout=PIPE, stderr=PIPE, shell=False);
-    (res, err) = child.communicate("")  
+    child = Popen(['./rank.sh', tempoutfile,'cosine'], stdout=PIPE, stderr=PIPE, shell=False)
+    (res, err) = child.communicate("")
     elapsed = time() - start
     guesses = res.splitlines()
     print '== Your stdout output is:'
